@@ -9,17 +9,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MySqlStudentDAO extends MySqlDAO implements StudentDaoInterface
 {
     @Override
-    public List<Student> findAllStudents() throws DaoException
+//    public List<Student> findAllStudents() throws DaoException
+    public Map<Integer, Student> findAllStudents() throws DaoException
     {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Student> students = new ArrayList<>();
+//        List<Student> students = new ArrayList<>();
+        Map<Integer, Student> students = new HashMap<>();
 
         try {
             //Get connection object using the methods in the super class (MySqlDao.java)...
@@ -36,7 +40,9 @@ public class MySqlStudentDAO extends MySqlDAO implements StudentDaoInterface
                 String password = rs.getString("password");
 
                 Student stu = new Student(caoNumber, dob, password);
-                students.add(stu);
+                students.put(caoNumber, stu);
+
+
             }
         } catch (SQLException e) {
             throw new DaoException("findAllUsers() " + e.getMessage());

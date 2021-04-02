@@ -9,6 +9,7 @@ import com.dkit.oopca5.server.MySqlStudentDAO;
 import com.dkit.oopca5.server.StudentDaoInterface;
 
 import java.util.List;
+import java.util.Map;
 
 public class App
 {
@@ -22,7 +23,7 @@ public class App
         try
         {
             //TODO Find All Students
-            List<Student> studentList = studentDao.findAllStudents();
+            Map<Integer, Student> studentList = studentDao.findAllStudents();
             System.out.println(studentList);
 
             // TODO Find All Courses

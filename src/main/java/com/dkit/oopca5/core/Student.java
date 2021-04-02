@@ -39,11 +39,11 @@ public class Student
         this.caoNumber = caoNumber;
     }
 
-    public String getDayOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDayOfBirth(String dayOfBirth) {
+    public void setDateOfBirth(String dayOfBirth) {
         this.dateOfBirth = dayOfBirth;
     }
 
@@ -82,5 +82,7 @@ public class Student
 //                ", email='" + email + '\'' +
                 '}';
     }
+
+
 }
 

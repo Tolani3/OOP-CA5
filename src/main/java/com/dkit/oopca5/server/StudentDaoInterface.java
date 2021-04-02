@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface StudentDaoInterface
 {
-    public List<Student> findAllStudents() throws DaoException;
+    public List<Student> findAllStudents()throws DaoException;
+    public Student findStudent(int caoNumber)throws DaoException;
+    public boolean registerStudent(Student s)throws DaoException;
+
+
 
 }

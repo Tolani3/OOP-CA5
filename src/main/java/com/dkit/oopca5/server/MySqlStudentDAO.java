@@ -1,6 +1,7 @@
 package com.dkit.oopca5.server;
 
 import com.dkit.oopca5.Exceptions.DaoException;
+import com.dkit.oopca5.core.Colours;
 import com.dkit.oopca5.core.Student;
 
 import java.sql.Connection;
@@ -20,8 +21,7 @@ public class MySqlStudentDAO extends MySqlDAO implements StudentDaoInterface
         ResultSet rs = null;
         List<Student> students = new ArrayList<>();
 
-        try
-        {
+        try {
             //Get connection object using the methods in the super class (MySqlDao.java)...
             con = this.getConnection();
 
@@ -30,8 +30,7 @@ public class MySqlStudentDAO extends MySqlDAO implements StudentDaoInterface
 
             //Using a PreparedStatement to execute SQL...
             rs = ps.executeQuery();
-            while (rs.next())
-            {
+            while (rs.next()) {
                 int caoNumber = rs.getInt("caoNumber");
                 String dob = rs.getString("dateOfBirth");
                 String password = rs.getString("password");
@@ -39,30 +38,116 @@ public class MySqlStudentDAO extends MySqlDAO implements StudentDaoInterface
                 Student stu = new Student(caoNumber, dob, password);
                 students.add(stu);
             }
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             throw new DaoException("findAllUsers() " + e.getMessage());
-        } finally
-        {
-            try
-            {
-                if (rs != null)
-                {
+        } finally {
+            try {
+                if (rs != null) {
                     rs.close();
                 }
-                if (ps != null)
-                {
+                if (ps != null) {
                     ps.close();
                 }
-                if (con != null)
-                {
+                if (con != null) {
                     freeConnection(con);
                 }
-            } catch (SQLException e)
-            {
+            } catch (SQLException e) {
                 throw new DaoException("findAllUsers() " + e.getMessage());
             }
         }
         return students;     // may be empty
     }
+
+    @Override
+    public Student findStudent(int caoNumber) throws DaoException
+    {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Student s = null;
+
+        try {
+            con = this.getConnection();
+
+            String query = "SELECT * FROM Student WHERE caoNumber = ?";
+            ps = con.prepareStatement(query);
+            ps.setInt(1, caoNumber);  // search based on the cao number
+
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                caoNumber = rs.getInt("CAONUMBER");
+                String dateOfBirth = rs.getString("DATEOFBIRTH");
+                String password = rs.getString("PASSWORD");
+
+                s = new Student(caoNumber, dateOfBirth, password);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("findUserByUsernamePassword() " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("findUserByUsernamePassword() " + e.getMessage());
+            }
+        }
+        return s;     // s may be null
+    }
+
+
+    @Override
+    public boolean registerStudent(Student s) throws DaoException
+    {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean success = false;
+
+        try {
+            //Get connection object using the methods in the super class (MySqlDao.java)...
+            con = this.getConnection();
+
+            String query = "INSERT INTO STUDENT VALUES (?,?,?)";
+            ps = con.prepareStatement(query);
+
+            ps.setInt(1, s.getCaoNumber());
+            ps.setString(2, s.getDateOfBirth());
+            ps.setString(3, s.getPassword());
+
+
+            //Using a PreparedStatement to execute SQL - UPDATE...
+            success = (ps.executeUpdate() == 1);
+
+        } catch (SQLException e) {
+            throw new DaoException("insertStudent() " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("insertStudent() " + e.getMessage());
+            }
+        }
+        return success;
+    }
 }
+
+
+
+
+
+

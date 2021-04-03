@@ -13,6 +13,7 @@ public interface StudentDaoInterface
 
     public Student findStudent(int caoNumber)throws DaoException;
     public boolean registerStudent(Student s)throws DaoException;
+    public boolean loginStudent(Student s)throws DaoException;
 
 
 

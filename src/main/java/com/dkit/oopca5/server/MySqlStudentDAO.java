@@ -44,20 +44,29 @@ public class MySqlStudentDAO extends MySqlDAO implements StudentDaoInterface
 
 
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DaoException("findAllUsers() " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
+        }
+        finally
+        {
+            try
+            {
+                if (rs != null)
+                {
                     rs.close();
                 }
-                if (ps != null) {
+                if (ps != null)
+                {
                     ps.close();
                 }
-                if (con != null) {
+                if (con != null)
+                {
                     freeConnection(con);
                 }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e)
+            {
                 throw new DaoException("findAllUsers() " + e.getMessage());
             }
         }
@@ -80,27 +89,38 @@ public class MySqlStudentDAO extends MySqlDAO implements StudentDaoInterface
             ps.setInt(1, caoNumber);  // search based on the cao number
 
             rs = ps.executeQuery();
-            if (rs.next()) {
-                caoNumber = rs.getInt("CAONUMBER");
-                String dateOfBirth = rs.getString("DATEOFBIRTH");
-                String password = rs.getString("PASSWORD");
+            if (rs.next())
+            {
+                caoNumber = rs.getInt("caoNumber");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String password = rs.getString("password");
 
                 s = new Student(caoNumber, dateOfBirth, password);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             throw new DaoException("findUserByUsernamePassword() " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
+        }
+        finally
+        {
+            try
+            {
+                if (rs != null)
+                {
                     rs.close();
                 }
-                if (ps != null) {
+                if (ps != null)
+                {
                     ps.close();
                 }
-                if (con != null) {
+                if (con != null)
+                {
                     freeConnection(con);
                 }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e)
+            {
                 throw new DaoException("findUserByUsernamePassword() " + e.getMessage());
             }
         }
@@ -109,7 +129,7 @@ public class MySqlStudentDAO extends MySqlDAO implements StudentDaoInterface
 
 
     @Override
-    public boolean registerStudent(Student s) throws DaoException
+    public boolean registerStudent(Student r) throws DaoException
     {
         Connection con = null;
         PreparedStatement ps = null;
@@ -123,9 +143,9 @@ public class MySqlStudentDAO extends MySqlDAO implements StudentDaoInterface
             String query = "INSERT INTO STUDENT VALUES (?,?,?)";
             ps = con.prepareStatement(query);
 
-            ps.setInt(1, s.getCaoNumber());
-            ps.setString(2, s.getDateOfBirth());
-            ps.setString(3, s.getPassword());
+            ps.setInt(1, r.getCaoNumber());
+            ps.setString(2, r.getDateOfBirth());
+            ps.setString(3, r.getPassword());
 
 
             //Using a PreparedStatement to execute SQL - UPDATE...
@@ -149,6 +169,50 @@ public class MySqlStudentDAO extends MySqlDAO implements StudentDaoInterface
             }
         }
         return success;
+    }
+
+    @Override
+    public boolean loginStudent(Student s) throws DaoException
+    {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean loginSuccessful = false;
+        try
+        {
+            con = this.getConnection();
+            String query = "SELECT * FROM student WHERE cao_number = ? AND date_of_birth = ? AND `password` = ?;";
+            ps = con.prepareStatement(query);
+            ps.setInt(1, s.getCaoNumber());
+            ps.setString(2, s.getDateOfBirth());
+            ps.setString(3, s.getPassword());
+            rs = ps.executeQuery();
+            if (rs.next())
+            {
+                loginSuccessful = true;
+            }
+        } catch (SQLException sq)
+        {
+            throw new DaoException(Colours.RED + "Login Student Error: " + sq.getMessage() + Colours.RESET);
+        } catch (NullPointerException npe)
+        {
+            System.out.println(Colours.RED+"Cannot be null"+Colours.RESET);
+        } finally
+        {
+            try
+            {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (con != null)
+                    con.close();
+            } catch (SQLException sq)
+            {
+                throw new DaoException(Colours.RED + "Finally Closing Error" + sq.getMessage() + Colours.RESET);
+            }
+        }
+        return loginSuccessful;
     }
 }
 

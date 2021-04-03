@@ -19,6 +19,7 @@ public class MySqlCourseDAO extends MySqlDAO implements CourseDaoInterface
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+
         List<Course> courseList = new ArrayList<>();
         try
         {

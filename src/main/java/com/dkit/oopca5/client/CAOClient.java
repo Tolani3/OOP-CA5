@@ -6,7 +6,10 @@ package com.dkit.oopca5.client;
 /* The CAOClient offers students a menu and sends messages to the server using TCP Sockets
  */
 
+import com.dkit.oopca5.Exceptions.DaoException;
 import com.dkit.oopca5.core.Colours;
+import com.dkit.oopca5.core.Student;
+import com.dkit.oopca5.server.*;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -15,39 +18,70 @@ public class CAOClient
 {
     private static Scanner keyboard = new Scanner(System.in);
 
+    //Loading DaoInterfaces
+    private static StudentDaoInterface studentDaoInterface = new MySqlStudentDAO();
+    private static CourseDaoInterface courseDaoInterface = new MySqlCourseDAO();
+    private static ChoicesDaoInterface choicesDaoInterface = new MySqlChoicesDAO();
+
+
     public static void main(String[] args)
     {
         CAOClient App = new CAOClient();
         App.start();
+
+        MainMenuLoop();
     }
 
     private void start()
     {
-        MainMenuLoop();
+
     }
 
-    private void MainMenuLoop()
+    private static void MainMenuLoop()
     {
         boolean loop = true;
-
-        MainMenu menuOption;
+        MainMenu mainMenu;
         int option;
-        while (loop) {
+        while (loop)
+        {
             printMainMenu();
-            try {
+            try
+            {
                 option = keyboard.nextInt();
                 keyboard.nextLine();
-                menuOption = MainMenu.values()[option];
-                switch (menuOption)
+                mainMenu = MainMenu.values()[option];
+                switch (mainMenu)
                 {
                     case QUIT_APPLICATION:
                         loop = false;
                         break;
                     case REGISTER:
-                        registerStudent();
+                        try
+                        {
+                            System.out.println("Enter CAO Number: ");
+                            int caoNumber = keyboard.nextInt();
+                            System.out.println("Date-Of-Birth");
+                            String dob = keyboard.next();
+                            System.out.println("Enter Password");
+                            String password = keyboard.next();
+                            studentDaoInterface.registerStudent(new Student(caoNumber, dob, password));
+                        }
+                        catch (DaoException e)
+                        {
+                            System.out.println(Colours.RED + "InputMismatchException, Try again" + Colours.RESET);
+                        }
                         break;
                     case LOGIN:
-                        ComputerMenuLoop();
+                        System.out.println("Enter CAO Number: ");
+                        int caoNumber = keyboard.nextInt();
+                        System.out.println("Date-Of-Birth");
+                        String dob = keyboard.next();
+                        System.out.println("Enter Password");
+                        String password = keyboard.next();
+
+                        boolean login = login(caoNumber, dob, password);
+                        if(login)
+                            StudentMenu(caoNumber);
                         break;
                 }
             } catch (IllegalArgumentException e) {

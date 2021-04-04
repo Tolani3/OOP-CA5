@@ -28,7 +28,6 @@ public class CAOClient
     {
         CAOClient App = new CAOClient();
         App.start();
-
         MainMenuLoop();
     }
 
@@ -116,7 +115,6 @@ public class CAOClient
         }
     }
 
-
     public static void StudentMenu(int caoNumber)
     {
         boolean loop = true;
@@ -144,8 +142,6 @@ public class CAOClient
                         System.out.println("Enter your CAO number:");
                         caoNumber = keyboard.nextInt();
                         System.out.println(choicesDaoInterface.findCourseChoice(caoNumber));
-
-
                 }
             }
             catch (Exception e)
@@ -155,7 +151,6 @@ public class CAOClient
         }
     }
 
-
     public static void printMainMenu()
     {
         System.out.println("\nOPtions:");
@@ -164,6 +159,7 @@ public class CAOClient
         }
         System.out.println("Select an option (0 to quit): ");//Don't allow duplicates, ID values unique
     }
+
     private static void printStudentMenu ()
     {
         System.out.println("\nOPtions:");
@@ -173,5 +169,4 @@ public class CAOClient
         }
         System.out.println("Select an option (0 to quit): ");//Don't allow duplicates, ID values unique
     }
-
 }

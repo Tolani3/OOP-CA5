@@ -181,7 +181,7 @@ public class MySqlStudentDAO extends MySqlDAO implements StudentDaoInterface
         try
         {
             con = this.getConnection();
-            String query = "SELECT * FROM student WHERE cao_number = ? AND date_of_birth = ? AND `password` = ?;";
+            String query = "SELECT * FROM student WHERE caoNumber = ? AND dateOfBirth = ? AND `password` = ?;";
             ps = con.prepareStatement(query);
             ps.setInt(1, s.getCaoNumber());
             ps.setString(2, s.getDateOfBirth());

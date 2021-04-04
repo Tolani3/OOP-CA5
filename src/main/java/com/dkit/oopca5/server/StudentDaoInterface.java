@@ -16,5 +16,4 @@ public interface StudentDaoInterface
     public boolean loginStudent(Student s)throws DaoException;
 
 
-
 }

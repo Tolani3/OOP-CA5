@@ -37,27 +37,23 @@ public class CAOClient
 
     }
 
-    private static void MainMenuLoop()
+    public static void MainMenuLoop()
     {
         boolean loop = true;
         MainMenu mainMenu;
         int option;
-        while (loop)
-        {
+        while (loop) {
             printMainMenu();
-            try
-            {
+            try {
                 option = keyboard.nextInt();
                 keyboard.nextLine();
                 mainMenu = MainMenu.values()[option];
-                switch (mainMenu)
-                {
+                switch (mainMenu) {
                     case QUIT_APPLICATION:
                         loop = false;
                         break;
                     case REGISTER:
-                        try
-                        {
+                        try {
                             System.out.println("Enter CAO Number: ");
                             int caoNumber = keyboard.nextInt();
                             System.out.println("Date-Of-Birth");
@@ -65,9 +61,7 @@ public class CAOClient
                             System.out.println("Enter Password");
                             String password = keyboard.next();
                             studentDaoInterface.registerStudent(new Student(caoNumber, dob, password));
-                        }
-                        catch (DaoException e)
-                        {
+                        } catch (DaoException e) {
                             System.out.println(Colours.RED + "InputMismatchException, Try again" + Colours.RESET);
                         }
                         break;
@@ -78,8 +72,13 @@ public class CAOClient
                         String dob = keyboard.next();
                         System.out.println("Enter Password");
                         String password = keyboard.next();
-
-                        boolean login = login(caoNumber, dob, password);
+//                        if
+//                        (
+//                                studentDaoInterface.loginStudent (caoNumber,dob,password)
+//                        );
+//                            StudentMenu(caoNumber);
+//                        break;
+                        boolean login = studentDaoInterface.loginStudent(new Student(caoNumber, dob, password));
                         if(login)
                             StudentMenu(caoNumber);
                         break;
@@ -93,6 +92,42 @@ public class CAOClient
             } catch (InputMismatchException ime) {
                 System.out.println(Colours.RED + "InputMismatchException, Try again" + Colours.RESET);
                 keyboard.nextLine();
+            } catch (DaoException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
+
+
+    public static void StudentMenu(int caoNumber)
+    {
+        boolean loop = true;
+        StudentMenu mainMenu;
+        int option;
+        while (loop) {
+            printStudentMenu();
+            try {
+                option = keyboard.nextInt();
+                keyboard.nextLine();
+                mainMenu = StudentMenu.values()[option];
+                switch (mainMenu) {
+                    case LOG_OUT:
+                        loop = false;
+                        break;
+                    case DISPLAY_ALL_COURSES:
+                        System.out.println(courseDaoInterface.getAllCourses());
+                        break;
+                    case DISPLAY_COURSE:
+                        System.out.println("Course ID:");
+                        String courseID = keyboard.next();
+                        System.out.println(courseDaoInterface.DisplayCourse(courseID));
+                        break;
+
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
             }
         }
     }
@@ -101,10 +136,19 @@ public class CAOClient
     public static void printMainMenu()
     {
         System.out.println("\nOPtions:");
-        for (int i = 0; i < MainMenu.values().length; i++)
-        {
+        for (int i = 0; i < MainMenu.values().length; i++) {
             System.out.println("\t" + Colours.BLUE + i + ". " + MainMenu.values()[i].toString() + Colours.RESET);
         }
         System.out.println("Select an option (0 to quit): ");//Don't allow duplicates, ID values unique
     }
+    private static void printStudentMenu ()
+    {
+        System.out.println("\nOPtions:");
+        for (int i = 0; i < StudentMenu.values().length; i++)
+        {
+            System.out.println("\t" + Colours.BLUE + i + ". " + StudentMenu.values()[i].toString() + Colours.RESET);
+        }
+        System.out.println("Select an option (0 to quit): ");//Don't allow duplicates, ID values unique
+    }
+
 }

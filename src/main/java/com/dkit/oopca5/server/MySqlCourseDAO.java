@@ -58,4 +58,51 @@ public class MySqlCourseDAO extends MySqlDAO implements CourseDaoInterface
         }
         return courseList;
     }
+
+    @Override
+    public Course DisplayCourse(String courseID) throws DaoException
+    {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Course returnedCourse = null;
+
+        try
+        {
+            con = this.getConnection();
+            String query = "SELECT * FROM COURSE WHERE courseID = ?;";
+            ps = con.prepareStatement(query);
+            ps.setString(1, courseID);
+            rs = ps.executeQuery();
+            if (rs.next())
+            {
+                int level = rs.getInt("level");
+                String title = rs.getString("title");
+                String institution = rs.getString("institution");
+                returnedCourse = new Course(courseID, level, title, institution);
+            }
+        } catch (SQLException sq)
+        {
+            throw new DaoException(Colours.RED + "Get Course Error: " + sq.getMessage() + Colours.RESET);
+        } catch (NullPointerException npe)
+        {
+            System.out.println(Colours.RED + "Cannot be null" + Colours.RESET);
+        } finally
+        {
+            try
+            {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (con != null)
+                    con.close();
+            } catch (SQLException sq)
+            {
+                throw new DaoException(Colours.RED + "Finally Error: " + sq.getMessage() + Colours.RESET);
+            }
+        }
+        return returnedCourse;
+    }
+
 }

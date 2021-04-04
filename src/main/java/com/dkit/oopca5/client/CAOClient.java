@@ -122,6 +122,11 @@ public class CAOClient
                         String courseID = keyboard.next();
                         System.out.println(courseDaoInterface.DisplayCourse(courseID));
                         break;
+                    case DISPLAY_CURRENT_COURSES:
+                        System.out.println("Enter your CAO number:");
+                        caoNumber = keyboard.nextInt();
+                        System.out.println(choicesDaoInterface.findCourseChoice(caoNumber));
+
 
                 }
             }

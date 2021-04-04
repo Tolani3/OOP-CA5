@@ -15,7 +15,7 @@ public class Choices
         this.courseChoices = courseChoices;
     }
 
-    public Choices(int caoNumber)
+    public Choices(int caoNumber, String courseID)
     {
         this.caoNumber = caoNumber;
         this.courseChoices = new ArrayList<>();

@@ -12,8 +12,6 @@ import java.util.List;
 
 public class MySqlChoicesDAO extends MySqlDAO implements ChoicesDaoInterface
 {
-
-
     @Override
     public List<String> findCourseChoice(int caoNumber) throws DaoException
     {

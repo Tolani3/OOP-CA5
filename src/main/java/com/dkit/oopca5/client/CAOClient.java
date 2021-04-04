@@ -55,11 +55,29 @@ public class CAOClient
                     case REGISTER:
                         try {
                             System.out.println("Enter CAO Number: ");
+                            String pattern = "^[0-9]{8}$";
                             int caoNumber = keyboard.nextInt();
+                            String pass = String.valueOf(caoNumber);
+                            if(!RegexChecker.checkRegister(pass, pattern))
+                            {
+                                throw new IllegalArgumentException();
+                            }
+
                             System.out.println("Date-Of-Birth");
+                            pattern = "^\\d{4}-\\d{2}-\\d{2}$";
                             String dob = keyboard.next();
+                            if(!RegexChecker.checkRegister(pass, pattern))
+                            {
+                                throw new IllegalArgumentException();
+                            }
+
                             System.out.println("Enter Password");
+                            pattern = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$";
                             String password = keyboard.next();
+                            if(!RegexChecker.checkRegister(pass, pattern))
+                            {
+                                throw new IllegalArgumentException();
+                            }
                             studentDaoInterface.registerStudent(new Student(caoNumber, dob, password));
                         } catch (DaoException e) {
                             System.out.println(Colours.RED + "InputMismatchException, Try again" + Colours.RESET);

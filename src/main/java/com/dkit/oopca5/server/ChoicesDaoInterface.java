@@ -1,10 +1,11 @@
 package com.dkit.oopca5.server;
 
 import com.dkit.oopca5.Exceptions.DaoException;
-import com.dkit.oopca5.core.Choices;
+
+import java.util.List;
 
 public interface ChoicesDaoInterface
 {
-    public Choices findCourseChoice(int caoNumber)throws DaoException;
+    public List<String> findCourseChoice(int caoNumber)throws DaoException;
 
 }

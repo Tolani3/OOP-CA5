@@ -7,18 +7,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySqlChoicesDAO extends MySqlDAO implements ChoicesDaoInterface
 {
 
 
     @Override
-    public Choices findCourseChoice(int caoNumber) throws DaoException
+    public List<String> findCourseChoice(int caoNumber) throws DaoException
     {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         Choices c = null;
+        List<String> choicesList = new ArrayList<>();
 
         try {
             con = this.getConnection();
@@ -26,15 +29,13 @@ public class MySqlChoicesDAO extends MySqlDAO implements ChoicesDaoInterface
             String query = "SELECT * FROM choices WHERE caoNumber = ?";
             ps = con.prepareStatement(query);
             ps.setInt(1, caoNumber);  // search based on the cao number
-
             rs = ps.executeQuery();
-            if (rs.next())
+            while (rs.next())
             {
-                caoNumber = rs.getInt("caoNumber");
-                String courseID = rs.getString("courseID");
-
-                c = new Choices(caoNumber, courseID);
+                choicesList.add(rs.getString(2));
             }
+            if (choicesList.size() != 0)
+                c = new Choices(caoNumber, choicesList); // Don't make an object if doesn't exist
         }
         catch (SQLException e)
         {
@@ -55,6 +56,6 @@ public class MySqlChoicesDAO extends MySqlDAO implements ChoicesDaoInterface
                 throw new DaoException("findUserByUsernamePassword() " + e.getMessage());
             }
         }
-        return c;     // s may be null
+        return choicesList;     // s may be null
     }
 }

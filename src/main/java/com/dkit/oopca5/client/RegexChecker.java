@@ -9,20 +9,16 @@
 //
 //public class RegexChecker
 //{
-//    public boolean RegisterStudent(String num, String pattern)
+//    public boolean ????()
 //    {
-//        boolean match = false;
 //        try
 //        {
-//            String Reg = String.valueOf(num);
-//            Pattern pattern1 = Pattern.compile(pattern);
-//            Matcher Matcher1 = pattern.matcher(b);
-//            match = matcher.find();
+//
 //        }
 //        catch (PatternSyntaxException e)
 //        {
 //            e.printStackTrace();
 //        }
-//        return match;
+//        return ;
 //    }
 //}

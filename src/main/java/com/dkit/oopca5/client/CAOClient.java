@@ -63,9 +63,9 @@ public class CAOClient
                             }
 
                             System.out.println("Date-Of-Birth");
-                            pattern = "^\\d{4}-\\d{2}-\\d{2}$";
                             String dob = keyboard.next();
-                            if(!RegexChecker.checkRegister(pass, pattern))
+                            pattern = "^\\d{4}-\\d{2}-\\d{2}$";
+                            if(!RegexChecker.checkRegister(dob, pattern))
                             {
                                 throw new IllegalArgumentException();
                             }
@@ -73,7 +73,7 @@ public class CAOClient
                             System.out.println("Enter Password");
                             pattern = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$";
                             String password = keyboard.next();
-                            if(!RegexChecker.checkRegister(pass, pattern))
+                            if(!RegexChecker.checkRegister(password, pattern))
                             {
                                 throw new IllegalArgumentException();
                             }

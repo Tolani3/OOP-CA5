@@ -7,6 +7,7 @@ import com.dkit.oopca5.server.StudentDaoInterface;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class StudentTest
 {
@@ -43,11 +44,23 @@ public class StudentTest
         assertTrue(actual.equals(expected));
     }
 
-    @Test
-    public void testFindStudent() throws DaoException
-    {
-
-    }
+//    @Test
+//    public void testFindStudent() throws DaoException
+//    {
+//        Student s = new Student(10000001, "2001-09-04", "Password1");
+//        Student s2 = new Student(1, "2001-09-04", "Password1");
+//        try
+//        {
+//            assertNotNull("Get student exists", MySqlStudentDAO.findStudent(s.getCaoNumber()));
+//            // student exists in database therefore get back student object
+//
+//            assertNull("Get student not exists",MySqlStudentDAO.getStudent(s2.getCaoNumber()));
+//            //Student does not exist in database therefore returns null
+//        } catch (DaoException dao)
+//        {
+//            dao.printStackTrace();
+//        }
+//    }
 
 
 

@@ -5,6 +5,10 @@ package com.dkit.oopca5.client;
 
 /* The CAOClient offers students a menu and sends messages to the server using TCP Sockets
  */
+/**
+ * D00230487
+ *Tolani Animasahun
+ */
 
 import com.dkit.oopca5.Exceptions.DaoException;
 import com.dkit.oopca5.core.CAOService;
@@ -110,12 +114,25 @@ public class CAOClient
                         case LOGIN:
                             while (true) {
 
-                                System.out.println("Enter CAO Number: ");
+                                System.out.println("Enter CAO Number: 8 digit number");
+                                String pattern = "^[0-9]{8}$";
                                 int caoNumber = keyboard.nextInt();
-                                System.out.println("Date-Of-Birth");
+                                String pass = String.valueOf(caoNumber);
+                                if (!RegexChecker.checkRegister(pass, pattern)) {
+                                    throw new IllegalArgumentException();
+                                }
+                                System.out.println("Date-Of-Birth: YYYY-MM-DD");
                                 String dob = keyboard.next();
+                                pattern = "^\\d{4}-\\d{2}-\\d{2}$";
+                                if (!RegexChecker.checkRegister(dob, pattern)) {
+                                    throw new IllegalArgumentException();
+                                }
                                 System.out.println("Enter Password");
+                                pattern = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$";
                                 String password = keyboard.next();
+                                if (!RegexChecker.checkRegister(password, pattern)) {
+                                    throw new IllegalArgumentException();
+                                }
 
                                 String command = CAOService.LOGIN_COMMAND + CAOService.BREAKING_CHARACTER + caoNumber + CAOService.BREAKING_CHARACTER + dob + CAOService.BREAKING_CHARACTER + password;
                                 socketWriter.println(command); //send message to server via socket
@@ -157,7 +174,7 @@ public class CAOClient
     }
 
 
-    static void StudentMenu(int caoNumber)
+    public static void StudentMenu(int caoNumber)
     {
         try {
             Socket socket = new Socket("localhost", 8080);  // connect to server socket
@@ -192,14 +209,14 @@ public class CAOClient
                         case LOG_OUT:
                             loop = false;
                             break;
+                        case DISPLAY_ALL_COURSES:
+                            System.out.println(courseDaoInterface.getAllCourses());
+                            break;
 //                        case DISPLAY_ALL_COURSES:
 //                            command = CAOService.DISPLAY_ALL_COURSE + CAOService.BREAKING_CHARACTER + caoNumber;;
 //                            socketWriter.println(command); //send message to server via socket
-//
 //                            socketReader = new Scanner(socket.getInputStream());  // wait for, and retrieve the reply
-//
 //                            reply = socketReader.nextLine(); // waits for reply
-//
 //                            //reply
 //                            System.out.println("Reply " + reply);
 //                            break;
@@ -235,6 +252,8 @@ public class CAOClient
                 } catch (InputMismatchException ime) {
                     System.out.println(Colours.RED + "InputMismatchException, Try again" + Colours.RESET);
                     keyboard.nextLine();
+                } catch (DaoException throwables) {
+                    throwables.printStackTrace();
                 }
             }
             System.out.println(Colours.PURPLE + "See you later!!" + Colours.RESET);

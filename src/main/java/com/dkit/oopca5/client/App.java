@@ -16,23 +16,6 @@ public class App
 
     public static void main(String[] args)
     {
-        StudentDaoInterface studentDao = new MySqlStudentDAO();
-        CourseDaoInterface courseDao = new MySqlCourseDAO();
 
-
-        try
-        {
-            //TODO Find All Students
-            Map<Integer, Student> studentList = studentDao.findAllStudents();
-            System.out.println(studentList);
-
-            // TODO Find All Courses
-            List<Course> courseList = courseDao.getAllCourses();
-            System.out.println(courseList);
-        }
-        catch (DaoException e)
-        {
-            e.printStackTrace();
-        }
     }
 }

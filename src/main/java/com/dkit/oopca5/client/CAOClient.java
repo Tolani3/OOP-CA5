@@ -76,7 +76,7 @@ public class CAOClient
                         case REGISTER:
                             while (true) {
                                 try {
-                                    System.out.println("Enter CAO Number: ");
+                                    System.out.println("Enter CAO Number 8 digit number: ");
                                     String pattern = "^[0-9]{8}$";
                                     int caoNumber = keyboard.nextInt();
                                     String pass = String.valueOf(caoNumber);
@@ -84,7 +84,7 @@ public class CAOClient
                                         throw new IllegalArgumentException();
                                     }
 
-                                    System.out.println("Date-Of-Birth");
+                                    System.out.println("Date-Of-Birth: YYYY-MM-DD");
                                     String dob = keyboard.next();
                                     pattern = "^\\d{4}-\\d{2}-\\d{2}$";
                                     if (!RegexChecker.checkRegister(dob, pattern)) {
